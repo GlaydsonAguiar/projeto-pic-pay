@@ -1,28 +1,28 @@
 package com.desafio.picpay.services;
 
+import com.desafio.picpay.client.NotificacaoClient;
 import com.desafio.picpay.domain.usuario.Usuario;
 import com.desafio.picpay.dtos.NotificacaoDTO;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import jakarta.enterprise.context.ApplicationScoped;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 
-@Service
+@ApplicationScoped
 public class NotificacaoService {
 
-    private final RestTemplate restTemplate;
+    private final NotificacaoClient notificacaoClient;
 
-    public NotificacaoService(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public NotificacaoService(@RestClient NotificacaoClient notificacaoClient) {
+        this.notificacaoClient = notificacaoClient;
     }
 
     public void enviarNotificacao(Usuario usuario, String mensagem) throws Exception {
         String email = usuario.getEmail();
         NotificacaoDTO notificacaoDTO = new NotificacaoDTO(email, mensagem);
 
-        ResponseEntity<String> notificacaoResponse = restTemplate.postForEntity("https://util.devi.tools/api/v1/notify", notificacaoDTO, String.class);
-        if (notificacaoResponse.getStatusCode() != HttpStatus.NO_CONTENT) {
-            throw new Exception("Serviço de notificação está indisponível");
+        try {
+            notificacaoClient.enviar(notificacaoDTO);
+        } catch (Exception e) {
+            throw new Exception("Serviço de notificação está indisponível", e);
         }
     }
 }

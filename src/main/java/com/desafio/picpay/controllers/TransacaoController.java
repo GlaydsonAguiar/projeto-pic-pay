@@ -3,15 +3,16 @@ package com.desafio.picpay.controllers;
 import com.desafio.picpay.domain.transacao.Transacao;
 import com.desafio.picpay.dtos.TransacaoDTO;
 import com.desafio.picpay.services.TransacaoService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
-@RestController
-@RequestMapping("transacoes")
+@Path("/transacoes")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class TransacaoController {
 
     private final TransacaoService transacaoService;
@@ -20,9 +21,9 @@ public class TransacaoController {
         this.transacaoService = transacaoService;
     }
 
-    @PostMapping
-    public ResponseEntity<Transacao> criarTransacao(@RequestBody TransacaoDTO transacaoDTO) throws Exception {
+    @POST
+    public Response criarTransacao(TransacaoDTO transacaoDTO) throws Exception {
         Transacao novaTransacao = this.transacaoService.criandoTransacao(transacaoDTO);
-        return new ResponseEntity<>(novaTransacao, HttpStatus.CREATED);
+        return Response.status(Response.Status.CREATED).entity(novaTransacao).build();
     }
 }

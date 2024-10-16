@@ -4,12 +4,12 @@ import com.desafio.picpay.domain.usuario.TipoUsuario;
 import com.desafio.picpay.domain.usuario.Usuario;
 import com.desafio.picpay.domain.usuario.UsuarioDTO;
 import com.desafio.picpay.repositories.UsuarioRepository;
-import org.springframework.stereotype.Service;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-@Service
+@ApplicationScoped
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
