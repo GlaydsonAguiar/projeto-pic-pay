@@ -1,10 +1,7 @@
 package com.desafio.picpay.domain.usuario;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -13,6 +10,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Usuario {
 
@@ -29,10 +27,20 @@ public class Usuario {
     @Column(unique = true)
     private String email;
 
-    private String password;
+    private String senha;
     private BigDecimal saldo;
 
     @Enumerated(EnumType.STRING)
     private TipoUsuario tipoUsuario;
+
+    public Usuario(UsuarioDTO usuarioDTO) {
+        this.primeiroNome = usuarioDTO.primeiroNome();
+        this.sobrenome = usuarioDTO.sobrenome();
+        this.documento = usuarioDTO.documento();
+        this.email = usuarioDTO.email();
+        this.senha = usuarioDTO.senha();
+        this.saldo = usuarioDTO.saldo();
+        this.tipoUsuario = usuarioDTO.tipoUsuario();
+    }
 
 }
