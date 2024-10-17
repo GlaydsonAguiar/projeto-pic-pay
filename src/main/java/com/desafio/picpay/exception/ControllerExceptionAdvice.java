@@ -17,8 +17,11 @@ public class ControllerExceptionAdvice implements ExceptionMapper<Throwable> {
             return Response.status(Response.Status.BAD_REQUEST).entity(exceptionDTO).build();
         } else if (exception instanceof EntityNotFoundException) {
             return Response.status(Response.Status.NOT_FOUND).build();
-        } else {
+        } else if (exception instanceof UsuarioExeption || exception instanceof TransacaoException) {
             ExceptionDTO exceptionDTO = new ExceptionDTO(exception.getMessage(), "500");
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(exceptionDTO).build();
+        } else {
+            ExceptionDTO exceptionDTO = new ExceptionDTO("Ocorreu um erro inesperado", "500");
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(exceptionDTO).build();
         }
     }

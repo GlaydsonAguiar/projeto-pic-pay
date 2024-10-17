@@ -1,8 +1,9 @@
 package com.desafio.picpay.services;
 
-import com.desafio.picpay.domain.usuario.TipoUsuario;
+import com.desafio.picpay.dtos.TipoUsuario;
 import com.desafio.picpay.domain.usuario.Usuario;
-import com.desafio.picpay.domain.usuario.UsuarioDTO;
+import com.desafio.picpay.dtos.UsuarioDTO;
+import com.desafio.picpay.exception.UsuarioExeption;
 import com.desafio.picpay.repositories.UsuarioRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -18,18 +19,18 @@ public class UsuarioService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    public void validarTransacao(Usuario remetente, BigDecimal valor) throws Exception {
+    public void validarTransacao(Usuario remetente, BigDecimal valor) {
         if (remetente.getTipoUsuario() == TipoUsuario.LOJISTA) {
-            throw new Exception("Usuário do tipo Lojista não está autorizado a realizar transação");
+            throw new UsuarioExeption("Usuário do tipo Lojista não está autorizado a realizar transação");
         }
 
         if (remetente.getSaldo().compareTo(valor) < 0) {
-            throw new Exception("Saldo insuficiente");
+            throw new UsuarioExeption("Saldo insuficiente");
         }
     }
 
-    public Usuario encontrarUsuarioPorId(Long id) throws Exception {
-        return this.usuarioRepository.findUsuarioById(id).orElseThrow(() -> new Exception("Usuário não encontrado"));
+    public Usuario encontrarUsuarioPorId(Long id) {
+        return this.usuarioRepository.findUsuarioById(id).orElseThrow(() -> new UsuarioExeption("Usuário não encontrado"));
     }
 
     public void salvarUsuario(Usuario usuario) {

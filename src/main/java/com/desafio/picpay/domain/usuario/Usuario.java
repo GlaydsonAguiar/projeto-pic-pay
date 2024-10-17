@@ -1,5 +1,7 @@
 package com.desafio.picpay.domain.usuario;
 
+import com.desafio.picpay.dtos.TipoUsuario;
+import com.desafio.picpay.dtos.UsuarioDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
