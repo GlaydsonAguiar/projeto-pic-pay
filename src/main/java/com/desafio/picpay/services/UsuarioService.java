@@ -19,7 +19,7 @@ public class UsuarioService {
     }
 
     public void validarTransacao(Usuario remetente, BigDecimal valor) throws Exception {
-        if (remetente.getTipoUsuario() == TipoUsuario.LOJISTAS) {
+        if (remetente.getTipoUsuario() == TipoUsuario.LOJISTA) {
             throw new Exception("Usuário do tipo Lojista não está autorizado a realizar transação");
         }
 
